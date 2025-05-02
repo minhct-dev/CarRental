@@ -1,0 +1,78 @@
+#admin-home {
+  .total-earning-admin {
+    overflow: hidden;
+    &::after {
+      content: "";
+      position: absolute;
+      width: 210px;
+      height: 210px;
+      background: #4527a0;
+      border-radius: 50%;
+      top: -50%;
+      right: -25%;
+      z-index: 1;
+    }
+    &::before {
+      content: "";
+      position: absolute;
+      width: 210px;
+      height: 210px;
+      background: #4527a0;
+      border-radius: 50%;
+      opacity: 0.5;
+      top: -70%;
+      right: 0;
+      z-index: 2;
+    }
+  }
+  .total-order-admin {
+    @extend .total-earning-admin;
+    &::after {
+      content: "";
+      background: #1565c0;
+    }
+    &::before {
+      content: "";
+
+      background: #1565c0;
+    }
+  }
+
+  .car-owner-data {
+    overflow: hidden;
+    &::after {
+      content: "";
+      position: absolute;
+      width: 210px;
+      height: 210px;
+      background: linear-gradient(
+        140.9deg,
+        #90caf9 -14.02%,
+        rgba(144, 202, 249, 0) 77.58%
+      );
+      border-radius: 50%;
+      top: -160px;
+      right: -130px;
+    }
+    &::before{
+        content: "";
+    position: absolute;
+    width: 210px;
+    height: 210px;
+    background: linear-gradient(210.04deg, #90caf9 -50.94%, rgba(144, 202, 249, 0) 83.49%);
+    border-radius: 50%;
+    top: -30px;
+    right: -180px;
+    }
+  }
+
+  .driver-data{
+    @extend .car-owner-data;
+    &::after {
+        background: linear-gradient(140.9deg, #ffc107 -14.02%, rgba(144, 202, 249, 0) 70.50%);
+      }
+    &::before{
+        background: linear-gradient(210.04deg, #ffc107 -50.94%, rgba(144, 202, 249, 0) 83.49%);
+    }
+  }
+}

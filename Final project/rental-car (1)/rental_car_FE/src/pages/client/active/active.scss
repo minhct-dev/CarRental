@@ -1,0 +1,165 @@
+#active-account{
+    .success-body {
+        text-align: center;
+        padding: 40px 0;
+        background: #EBF0F5;
+        min-height: 50vh; /* Chiều cao toàn trang */
+        display: flex;
+        justify-content: center;
+      }
+  
+      h3 {
+        margin-top: 10px;
+        color: #88B04B;
+        
+        font-weight: 900;
+       
+        margin-bottom: 10px;
+      }
+      
+      p {
+        color: #404F5E;
+        font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+        font-size: 20px;
+        margin: 0;
+      }
+      
+      i {
+        color: #9ABC66;
+        font-size: 70px;
+        line-height: 100px;
+        margin-left: -15px;
+      }
+      
+      .card {
+        background: white;
+        padding: 60px;
+        border-radius: 4px;
+        box-shadow: 0 2px 3px #C8D0D8;
+        display: inline-block;
+        margin: 0 auto;
+        max-width: 700px;
+      }
+      
+      .circle {
+        border-radius: 200px;
+        height: 100px;
+        width: 100px;
+        background: #F8FAF5;
+        margin: 0 auto;
+      }
+      .detail-title{
+        font-weight: 600;
+      }
+}
+
+#activation-error{
+  .success-body {
+      text-align: center;
+      padding: 40px 0;
+      background: #EBF0F5;
+      min-height: 50vh; /* Chiều cao toàn trang */
+      display: flex;
+      justify-content: center;
+    }
+
+    h3 {
+      margin-top: 10px;
+      color: #f26507;
+      
+      font-weight: 900;
+     
+      margin-bottom: 10px;
+    }
+    
+    p {
+      color: #404F5E;
+      font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+      font-size: 20px;
+      margin: 0;
+    }
+    
+    i {
+      color: #e30d0d;
+      font-size: 40px;
+      line-height: 100px;
+      margin-left: -15px;
+    }
+    
+    .card {
+      background: white;
+      padding: 60px;
+      border-radius: 4px;
+      box-shadow: 0 2px 3px #C8D0D8;
+      display: inline-block;
+      margin: 0 auto;
+      max-width: 700px;
+    }
+    
+    .circle {
+      border-radius: 200px;
+      height: 100px;
+      width: 100px;
+      background: #F8FAF5;
+      margin: 0 auto;
+    }
+    .detail-title{
+      font-weight: 600;
+    }
+}
+
+#active-no{
+  .success-body {
+      text-align: center;
+      padding: 40px 0;
+      background: #EBF0F5;
+      min-height: 80vh; /* Chiều cao toàn trang */
+      display: flex;
+      justify-content: center;
+    }
+
+    h3 {
+      margin-top: 10px;
+      color: #8a79f0;
+      
+      font-weight: 900;
+     
+      margin-bottom: 10px;
+    }
+    
+    p {
+      color: #404F5E;
+      font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+      font-size: 20px;
+      margin: 0;
+    }
+    
+    i {
+      color: #8a79f0;
+      font-size: 70px;
+      line-height: 100px;
+      margin-left: -15px;
+    }
+    
+    .card {
+      background: white;
+      padding: 60px;
+      border-radius: 4px;
+      box-shadow: 0 2px 3px #C8D0D8;
+      display: inline-block;
+      margin: 0 auto;
+      max-width: 700px;
+    }
+    
+    .circle {
+      border-radius: 200px;
+      height: 100px;
+      width: 100px;
+      background: #F8FAF5;
+      margin: 0 auto;
+    }
+    .detail-title{
+      font-weight: 600;
+    }
+
+}

@@ -1,0 +1,13 @@
+package com.pjb2.rental_car.dto.response;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+public class UserRoleResponse {
+    int id;
+    String role;
+}

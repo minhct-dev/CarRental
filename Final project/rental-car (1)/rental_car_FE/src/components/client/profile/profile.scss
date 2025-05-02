@@ -1,0 +1,28 @@
+.profile-account {
+  font-weight: 400;
+  input {
+    padding: 8px 16px;
+    border-radius: 999px;
+    text-align: unset;
+    box-sizing: border-box;
+
+    &::placeholder {
+      color: #ccc;
+    }
+
+    &:focus {
+      border-color: #8a79f0;
+      box-shadow: none;
+    }
+  } 
+
+  
+
+  select{
+    &:focus {
+      border-color: #8a79f0;
+      box-shadow: none;
+    }
+
+  }
+}
