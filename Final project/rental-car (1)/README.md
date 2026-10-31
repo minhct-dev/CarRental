@@ -1,96 +1,119 @@
-# Rental Car
+# Rental Car Platform
 
-Admin Account : 
-- admin@gmail.com
-- Hieu123@
+A full-stack car-rental application with separate experiences for customers, car owners, drivers, and administrators. The platform supports vehicle discovery and booking, owner-side fleet management, driver requests, vouchers, feedback, wallet-related workflows, and real-time chat.
 
+> **Security notice:** Do not deploy this repository as-is. The current backend configuration contains credentials and signing secrets that must be rotated and moved out of source control. Configure secrets through environment variables or a secret manager before running outside a trusted local environment.
 
-## Getting started
+## Features
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+- **Customers:** search and view cars, create and manage bookings, view booking details, use vouchers, and communicate through chat.
+- **Car owners:** submit and manage car listings, review booking requests, manage vouchers, and view owner dashboards.
+- **Drivers:** view and respond to driver requests and manage related bookings.
+- **Administrators:** manage users, car listings, and vouchers.
+- **Real-time messaging:** chat features using Spring WebSocket and STOMP.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Technology stack
 
-## Add your files
+| Area | Technologies |
+| --- | --- |
+| Frontend | React 18, Vite, React Router, Redux Toolkit, TanStack Query, Axios, MUI, Bootstrap |
+| Backend | Java 17, Spring Boot 3.4.2, Spring Security, Spring Data JPA, Bean Validation |
+| Data and infrastructure | MySQL, Redis, SMTP email, Spring WebSocket/STOMP |
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+## Repository layout
 
+```text
+rental_car_BE/   Spring Boot backend
+rental_car_FE/   React/Vite frontend
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/hn25_cpl_pjb_02_g4_rental-car/rental-car.git
-git branch -M main
-git push -uf origin main
+
+## Prerequisites
+
+- Java 17
+- Node.js and npm (Node.js 20 LTS recommended)
+- MySQL
+- Redis
+- SMTP credentials if you want to use email-dependent flows
+
+## Local setup
+
+### 1. Configure MySQL and Redis
+
+Create a MySQL database named `carrental` (or set a different JDBC URL), and start MySQL and Redis locally.
+
+The application reads Spring configuration from `rental_car_BE/src/main/resources/application.properties`. Supply your own values through environment variables rather than committing credentials. For example, in PowerShell:
+
+```powershell
+$env:SPRING_DATASOURCE_URL = "jdbc:mysql://localhost:3306/carrental"
+$env:SPRING_DATASOURCE_USERNAME = "your_mysql_user"
+$env:SPRING_DATASOURCE_PASSWORD = "your_mysql_password"
+$env:SPRING_DATA_REDIS_HOST = "localhost"
+$env:SPRING_DATA_REDIS_PORT = "6379"
+$env:TOKEN_SECRET_KEY = "<base64-encoded-secret>"
+$env:SPRING_MAIL_USERNAME = "your_smtp_account"
+$env:SPRING_MAIL_PASSWORD = "your_smtp_app_password"
 ```
 
-## Integrate with your tools
+The JWT signing secret must be a valid Base64-encoded key suitable for HS512. Set your own token-expiry values as needed; do not reuse any value committed to the repository. Email settings are required for flows that send email.
 
-- [ ] [Set up project integrations](https://gitlab.com/hn25_cpl_pjb_02_g4_rental-car/rental-car/-/settings/integrations)
+> The current configuration uses Hibernate schema updates and SQL logging. Treat these as local-development defaults only; review database migration, logging, and secret-management settings before production use.
 
-## Collaborate with your team
+### 2. Start the backend
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+From the repository root, in PowerShell:
 
-## Test and Deploy
+```powershell
+cd rental_car_BE
+.\mvnw.cmd spring-boot:run
+```
 
-Use the built-in continuous integration in GitLab.
+The backend uses port `8080` by default. Once it is running, the OpenAPI UI is available at [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html), if enabled by the application configuration.
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+### 3. Start the frontend
 
-***
+In a second terminal:
 
-# Editing this README
+```powershell
+cd rental_car_FE
+npm install
+npm run dev
+```
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+Open [http://localhost:5173](http://localhost:5173).
 
-## Suggestions for a good README
+The current frontend API client points to `http://localhost:8080`, and the backend CORS/WebSocket configuration allows the local Vite origin. Non-local deployments require updating those URLs and allowed origins to match the deployment environment; use HTTPS/WSS for secure deployments.
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## Useful commands
 
-## Name
-Choose a self-explaining name for your project.
+### Frontend (`rental_car_FE`)
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+```bash
+npm run dev      # Start the Vite development server
+npm run build    # Build the frontend for production
+npm run lint     # Run ESLint
+npm run preview  # Preview the production build locally
+```
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+### Backend (`rental_car_BE`)
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+```bash
+./mvnw test
+./mvnw spring-boot:run
+```
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+On Windows, use `mvnw.cmd` instead of `./mvnw`.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+## Testing
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+The backend includes a Spring Boot context smoke test. Add and run focused tests for booking, authorization, wallet-related workflows, and chat before relying on the application in production. The frontend currently defines build and lint scripts but no test script in `package.json`.
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+## Configuration and deployment notes
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+- Never commit passwords, API keys, JWT signing keys, or real user credentials.
+- Rotate any credentials that have previously been committed, even if they have since been removed from this README.
+- The current upload implementation stores files locally and generates localhost URLs; production deployments need a persistent storage strategy and environment-specific URLs.
+- Review backend authorization rules, CORS, database schema management, and logging before exposing the service publicly.
 
 ## License
-For open source projects, say how it is licensed.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+No license is currently specified. Contact the repository owner before reusing or redistributing this project.
