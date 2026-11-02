@@ -29,7 +29,7 @@ function App() {
     }
   }, [profile]);
   const handleConnect = () => {
-    const socket = new SockJS("http://localhost:8080/ws");
+    const socket = new SockJS(`${import.meta.env.VITE_API_URL || "http://localhost:8080"}/ws`);
     const stompClient = over(socket);
     const connectHeaders = {
       Authorization: `Bearer ${localStorage.getItem("access_token")}`,

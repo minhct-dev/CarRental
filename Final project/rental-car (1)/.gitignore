@@ -1,0 +1,22 @@
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+**/application-local.properties
+**/application-local.yml
+
+# Build and runtime output
+**/target/
+**/dist/
+**/node_modules/
+**/uploads/
+*.sql
+**/hs_err_pid*.log
+*.log
+
+# IDE and OS files
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db

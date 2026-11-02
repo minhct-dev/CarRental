@@ -2,7 +2,7 @@
 
 A full-stack car-rental application with separate experiences for customers, car owners, drivers, and administrators. The platform supports vehicle discovery and booking, owner-side fleet management, driver requests, vouchers, feedback, wallet-related workflows, and real-time chat.
 
-> **Security notice:** Do not deploy this repository as-is. The current backend configuration contains credentials and signing secrets that must be rotated and moved out of source control. Configure secrets through environment variables or a secret manager before running outside a trusted local environment.
+> **Security notice:** This repository is prepared for public review, but it is not production-ready. Never commit real passwords, SMTP credentials, JWT keys, OAuth secrets, database dumps containing personal data, or uploaded files. Any credentials previously exposed in project history must be revoked and replaced.
 
 ## Features
 
@@ -41,7 +41,9 @@ rental_car_FE/   React/Vite frontend
 
 Create a MySQL database named `carrental` (or set a different JDBC URL), and start MySQL and Redis locally.
 
-The application reads Spring configuration from `rental_car_BE/src/main/resources/application.properties`. Supply your own values through environment variables rather than committing credentials. For example, in PowerShell:
+The application reads Spring configuration from `rental_car_BE/src/main/resources/application.properties`. The committed file contains no credentials; provide local values through environment variables. A starter list is available in `rental_car_BE/.env.example` (it is a reference file, not loaded automatically by Spring Boot).
+
+For PowerShell, set the required backend values before starting it:
 
 ```powershell
 $env:SPRING_DATASOURCE_URL = "jdbc:mysql://localhost:3306/carrental"
@@ -54,7 +56,7 @@ $env:SPRING_MAIL_USERNAME = "your_smtp_account"
 $env:SPRING_MAIL_PASSWORD = "your_smtp_app_password"
 ```
 
-The JWT signing secret must be a valid Base64-encoded key suitable for HS512. Set your own token-expiry values as needed; do not reuse any value committed to the repository. Email settings are required for flows that send email.
+`TOKEN_SECRET_KEY` must be a valid Base64-encoded key suitable for HS512. Email variables are required for registration and password-reset flows. Do not paste real values into the README or commit them to Git.
 
 > The current configuration uses Hibernate schema updates and SQL logging. Treat these as local-development defaults only; review database migration, logging, and secret-management settings before production use.
 
@@ -81,7 +83,7 @@ npm run dev
 
 Open [http://localhost:5173](http://localhost:5173).
 
-The current frontend API client points to `http://localhost:8080`, and the backend CORS/WebSocket configuration allows the local Vite origin. Non-local deployments require updating those URLs and allowed origins to match the deployment environment; use HTTPS/WSS for secure deployments.
+The frontend uses `VITE_API_URL` from `rental_car_FE/.env` (default: `http://localhost:8080`). Copy `rental_car_FE/.env.example` to `.env` for local development. The backend currently allows the local Vite origin for CORS/WebSocket; non-local deployments require updating the allowed origin and all application URLs to match the deployment environment. Use HTTPS/WSS for secure deployments.
 
 ## Useful commands
 
@@ -113,6 +115,7 @@ The backend includes a Spring Boot context smoke test. Add and run focused tests
 - Rotate any credentials that have previously been committed, even if they have since been removed from this README.
 - The current upload implementation stores files locally and generates localhost URLs; production deployments need a persistent storage strategy and environment-specific URLs.
 - Review backend authorization rules, CORS, database schema management, and logging before exposing the service publicly.
+- `rental_car_db.sql` is intentionally excluded from the public repository because database dumps may contain personal data, password hashes, tokens, or test credentials. Share a sanitized schema/seed file separately if needed.
 
 ## License
 
