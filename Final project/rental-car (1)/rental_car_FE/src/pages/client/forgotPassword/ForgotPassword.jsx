@@ -1,5 +1,5 @@
 import { Button, Stack, Typography } from "@mui/material";
-import "./ForgotPassword.scss";
+import "./forgotpassword.scss";
 import Form from "react-bootstrap/Form";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
