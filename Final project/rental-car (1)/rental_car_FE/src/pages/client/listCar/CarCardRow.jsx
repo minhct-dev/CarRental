@@ -12,6 +12,7 @@ import { formatVND } from "../../../helper/function";
 import AlarmOnIcon from "@mui/icons-material/AlarmOn";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import dayjs from "dayjs";
+import { DEMO_MODE } from "../../../data/demoData";
 const CarCardRow = ({ data }) => {
   // eslint-disable-next-line no-unused-vars
   const [searchParams, setSearchParams] = useSearchParams();
@@ -34,7 +35,7 @@ const CarCardRow = ({ data }) => {
         backgroundColor: "white",
         cursor: "pointer",
       }}
-      onClick={handleClick}
+      onClick={DEMO_MODE ? () => navigate(`/car/${data.id}`) : handleClick}
     >
       <Stack direction={"row"} spacing={3} sx={{ backgroundColor: "white" }}>
         <Box sx={{width:"30%"}}>
@@ -271,7 +272,7 @@ const CarCardRow = ({ data }) => {
                   fontWeight={400}
                   color="textSecondary"
                 >
-                  Day
+                  {DEMO_MODE ? " / Day · Demo" : "Day"}
                 </Typography>
               </Stack>
             </Stack>

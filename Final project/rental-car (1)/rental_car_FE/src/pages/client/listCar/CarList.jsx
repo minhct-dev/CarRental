@@ -9,7 +9,7 @@ import {
 import CarCard from "./CarCard";
 import { Container } from "react-bootstrap";
 import CarListFilter from "./CarListFilter";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -21,6 +21,7 @@ import CarCardRow from "./CarCardRow";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import utc from 'dayjs/plugin/utc';
+import { DEMO_MODE } from "../../../data/demoData";
 dayjs.extend(utc);
 const CarList = () => {
   const { data: maxPrice, isLoading } = useQuery({
@@ -68,16 +69,17 @@ const CarList = () => {
         params.set("to", defaultTo);
       }
 
-      // Kiểm tra min/max có hợp lệ không (phải là số và trong khoảng)
-      if (isNaN(minPrice) || minPrice < 0) minPrice = 0;
-      if (isNaN(maxSelectedPrice) || maxSelectedPrice > maxPrice)
-        maxSelectedPrice = maxPrice;
+      // Keep initial price bounds usable for both static demo and API modes.
+      const normalizedMin = isNaN(minPrice) || minPrice < 0 ? 0 : minPrice;
+      const normalizedMax = isNaN(maxSelectedPrice) || maxSelectedPrice > maxPrice
+        ? maxPrice
+        : maxSelectedPrice;
       if (
-        parseInt(searchParams.get("min")) !== minPrice ||
-        parseInt(searchParams.get("max")) !== maxSelectedPrice
+        params.get("min") !== String(normalizedMin) ||
+        params.get("max") !== String(normalizedMax)
       ) {
-        params.set("min", minPrice);
-        params.set("max", maxSelectedPrice);
+        params.set("min", normalizedMin);
+        params.set("max", normalizedMax);
       }
 
       return params;
@@ -88,6 +90,7 @@ const CarList = () => {
     maxSelectedPrice,
     toParam,
     setSearchParams,
+    searchParams,
     maxPrice,
   ]);
   const [showNotFound, setShowNotFound] = useState(false);
@@ -170,8 +173,13 @@ const CarList = () => {
           alignItems={"center"}
         >
           <Typography variant="h5" fontWeight={500} color="initial">
-            Find Vehicle
+            Find Vehicle{DEMO_MODE ? " — Demo listings; booking is disabled" : ""}
           </Typography>
+          {DEMO_MODE && (
+            <Button component={Link} to="/demo/add-car" variant="contained">
+              Add a car — Demo
+            </Button>
+          )}
           <Stack direction={"row"} spacing={0}>
             <Button
               onClick={() => setViewGrid(true)}

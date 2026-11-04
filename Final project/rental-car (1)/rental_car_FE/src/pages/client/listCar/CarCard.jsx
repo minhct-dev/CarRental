@@ -13,6 +13,7 @@ import AlarmOnIcon from "@mui/icons-material/AlarmOn";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import dayjs from "dayjs";
 import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
+import { DEMO_MODE } from "../../../data/demoData";
 const CarCard = ({ data }) => {
   // eslint-disable-next-line no-unused-vars
   const [searchParams, setSearchParams] = useSearchParams();
@@ -31,7 +32,7 @@ const CarCard = ({ data }) => {
         backgroundColor: "white",
         cursor: "pointer",
       }}
-      onClick={handleClick}
+      onClick={DEMO_MODE ? () => navigate(`/car/${data.id}`) : handleClick}
     >
       <Stack direction={"column"} spacing={2} sx={{ backgroundColor: "white" }}>
         <Box>
@@ -274,7 +275,7 @@ const CarCard = ({ data }) => {
                 fontWeight={400}
                 color="textSecondary"
               >
-                Day
+                / Day
               </Typography>
             </Stack>
           </Stack>

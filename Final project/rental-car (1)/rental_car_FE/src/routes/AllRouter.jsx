@@ -12,6 +12,9 @@ import Wallet from "../pages/client/wallet/Wallet";
 import PrivateRouter from "./PrivateRouter";
 import ClientLayout from "../layouts/ClientLayout";
 import CarListClient from "../pages/client/listCar/CarList";
+import DemoAddCar from "../pages/client/demo/DemoAddCar";
+import DemoCarDetail from "../pages/client/demo/DemoCarDetail";
+import { DEMO_MODE } from "../data/demoData";
 import AddCar from "../pages/carOwner/addCar/AddCar";
 import BookingList from "./../pages/client/bookingList/BookingList";
 import Booking from "../pages/client/booking/Booking";
@@ -83,11 +86,15 @@ const AllRouter = () => {
         },
         {
           path: "car/:id",
-          element: <CarDetail />,
+          element: DEMO_MODE ? <DemoCarDetail /> : <CarDetail />,
         },
         {
           path: "search",
           element: <CarListClient />,
+        },
+        {
+          path: "demo/add-car",
+          element: <DemoAddCar />,
         },
         {
           path: "bill/:id",

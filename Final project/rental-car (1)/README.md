@@ -35,6 +35,12 @@ rental_car_FE/   React/Vite frontend
 - Redis
 - SMTP credentials if you want to use email-dependent flows
 
+## Frontend-only demo preview
+
+The frontend defaults to a static demo mode (`VITE_DEMO_MODE=true`): car search, address filters, and the public `/demo/add-car` form use bundled sample data and browser `localStorage`, so they do not require the backend or database. Search dates are displayed but do not affect demo availability. Booking, account, chat, and owner-management workflows remain backend-dependent and are not part of this static preview.
+
+For Vercel, import the repository and set the project root to `rental_car_FE`; use build command `npm run build` and output directory `dist`. `rental_car_FE/vercel.json` rewrites SPA routes to `index.html`. The sample inventory is in `rental_car_FE/src/data/demoData.js`; local additions are saved in the current browser only and are not shared between visitors.
+
 ## Local setup
 
 ### 1. Configure MySQL and Redis

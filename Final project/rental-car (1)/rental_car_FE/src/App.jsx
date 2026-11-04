@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import AllRouter from "./routes/AllRouter";
 import { useQuery } from "@tanstack/react-query";
 import { getProfileApi } from "./api/userApi";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LOGIN, LOGOUT } from "./redux/slice/AuthSlice";
 import Loading from "./pages/client/loading/Loading";
@@ -14,6 +14,7 @@ import "aos/dist/aos.css";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
 import { SET_CLIENT_SOCKET } from "./redux/slice/stompsClient";
+import { DEMO_MODE } from "./data/demoData";
 
 function App() {
   const dispatch = useDispatch();
@@ -21,14 +22,13 @@ function App() {
   const socket = useSelector((state) => state.stomps.client);
   const [tokenReady, setTokenReady] = useState(false);
   const { profile, login } = useSelector((state) => state.auth);
-  useEffect(() => {
-    if (profile) {
-      if(!socket){
-        handleConnect();
-      }
-    }
-  }, [profile]);
-  const handleConnect = () => {
+  const onConnected = useCallback((client) => {
+    dispatch(SET_CLIENT_SOCKET(client));
+  }, [dispatch]);
+  const onError = useCallback(() => {
+    console.log("error");
+  }, []);
+  const handleConnect = useCallback(() => {
     const socket = new SockJS(`${import.meta.env.VITE_API_URL || "http://localhost:8080"}/ws`);
     const stompClient = over(socket);
     const connectHeaders = {
@@ -39,18 +39,15 @@ function App() {
       () => onConnected(stompClient),
       onError
     );
-  };
-  const onConnected = (client) => {
-    dispatch(SET_CLIENT_SOCKET(client));
-  };
-  const onError = () => {
-    console.log("error");
-  };
+  }, [onConnected, onError]);
+  useEffect(() => {
+    if (!DEMO_MODE && profile && !socket) handleConnect();
+  }, [profile, socket, handleConnect]);
 
   useLayoutEffect(() => {
     const accessToken = localStorage.getItem("access_token");
     const refreshToken = localStorage.getItem("refresh_token");
-    if (accessToken != null && refreshToken != null) {
+    if (!DEMO_MODE && accessToken != null && refreshToken != null) {
       setTokenReady(true);
     }
   }, [login]);
@@ -59,12 +56,13 @@ function App() {
     queryKey: ["profile"],
     queryFn: getProfileApi,
     retry: 0,
-    enabled: tokenReady,
+    enabled: !DEMO_MODE && tokenReady,
     staleTime: 1000 * 60 * 10,
     cacheTime: 1000 * 60 * 30,
   });
 
   useEffect(() => {
+    if (DEMO_MODE) return;
     if (isSuccess && data) {
       dispatch(LOGIN(data));
     }
@@ -74,7 +72,7 @@ function App() {
     }
   }, [data, isSuccess, isError, dispatch, navigate]);
 
-  if (isLoading) {
+  if (!DEMO_MODE && isLoading) {
     return <Loading />;
   }
 

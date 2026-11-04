@@ -14,6 +14,7 @@ import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { formatVND } from "../../../../helper/function";
 import { getMaxPrice } from "../../../../api/carApi";
+import { DEMO_MODE } from "../../../../data/demoData";
 
 const CarPriceModal = ({ show, handleClose }) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -22,9 +23,10 @@ const CarPriceModal = ({ show, handleClose }) => {
   const { data: maxPriceFromDB } = useQuery({
     queryKey: ["max-price"],
     queryFn: getMaxPrice,
+    enabled: !DEMO_MODE,
   });
 
-  const maxPrice = maxPriceFromDB || 1000000; // Fallback nếu API chưa có dữ liệu
+  const maxPrice = maxPriceFromDB || (DEMO_MODE ? 5000000 : 1000000); // Demo/API fallback
 
   // Lấy min/max từ URL
   let minPrice = parseInt(searchParams.get("min"));

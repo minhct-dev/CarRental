@@ -1,4 +1,19 @@
 import fetch from "./fetch";
+import {
+  DEMO_BRANDS,
+  DEMO_CARS,
+  DEMO_COLORS,
+  DEMO_MODE,
+  DEMO_MAX_PRICE,
+  searchDemoCars,
+} from "../data/demoData";
+
+const demoModels = DEMO_CARS.reduce((models, car) => {
+  if (!models.some((model) => model.id === car.modelId)) {
+    models.push({ id: car.modelId, name: car.model, brandId: car.brandId });
+  }
+  return models;
+}, []);
 
 export const carListAPI = async (sortOption, page, pageSize) => {
   const response = await fetch.get("/car_owner/list_car", {
@@ -20,24 +35,44 @@ export const getCarApi = async (id, startDate, endDate, feedbackPage) => {
 };
 
 export const searchCarApi = async (data) => {
+  if (DEMO_MODE) {
+    return searchDemoCars({
+      brandId: data.brandId,
+      color: data.color,
+      modelId: data.modelId,
+      minPrice: data.minPrice,
+      maxPrice: data.maxPrice,
+      provinceCode: data.provinceCode,
+      districtCode: data.districtCode,
+      wardCode: data.wardCode,
+      transmissionType: data.transmissionType,
+      fuelType: data.fuelType,
+      page: data.pageNumber || data.page,
+      pageSize: data.pageSize,
+    });
+  }
   let content = await fetch.post("/car/search", data);
   return content.data.data;
 };
 
 export const getBrandApi = async () => {
+  if (DEMO_MODE) return DEMO_BRANDS;
   let content = await fetch.get("/car/brands");
   return content.data.data;
 };
 export const getColorApi = async () => {
+  if (DEMO_MODE) return DEMO_COLORS;
   let content = await fetch.get("/car/colors");
   return content.data.data;
 };
 export const getModelApi = async (id) => {
+  if (DEMO_MODE) return demoModels.filter((model) => String(model.brandId) === String(id));
   let content = await fetch.get("/car/models/" + id);
   return content.data.data;
 };
 
 export const getMaxPrice = async () => {
+  if (DEMO_MODE) return DEMO_MAX_PRICE;
   let content = await fetch.get("/car/max-price");
   return content.data.data;
 };

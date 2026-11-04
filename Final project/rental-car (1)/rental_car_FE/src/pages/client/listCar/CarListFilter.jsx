@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { Box, Stack, Typography } from "@mui/material";
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import DateRangeIcon from "@mui/icons-material/DateRange";
@@ -129,7 +128,7 @@ const CarListFilter = () => {
       data.push(ward?.find((item) => item.code == wardCode));
     }
     setSelectAddress(data)
-  }, [provinceCode, districtCode, wardCode]);
+  }, [provinceCode, districtCode, wardCode, province, district, ward]);
 
   return (
     <Box

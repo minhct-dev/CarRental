@@ -8,6 +8,7 @@ import Comment from "../../../components/client/home/Comment/Comment";
 import VoucherHomePage from "../../../components/client/home/voucher/VoucherHomePage";
 import { useQuery } from "@tanstack/react-query";
 import { getVoucherHomePageApi } from "../../../api/homeApi";
+import { DEMO_MODE } from "../../../data/demoData";
 import Loading from "../loading/Loading";
 import { useLocation, useNavigate } from "react-router-dom";
 const Home = () => {
@@ -27,6 +28,7 @@ const Home = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["voucher-home"],
     queryFn: getVoucherHomePageApi,
+    enabled: !DEMO_MODE,
   });
 
   useEffect(() => {
@@ -57,7 +59,7 @@ const Home = () => {
     }
   }, [location, navigate]);
 
-  if (isLoading) {
+  if (!DEMO_MODE && isLoading) {
     return <Loading></Loading>;
   }
   return (
